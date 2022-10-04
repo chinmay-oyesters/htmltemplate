@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import * as XLSX from "xlsx";
+import EmailEditor from "react-email-editor";
 
 function App() {
-  const [heading ,setHeading] =  useState([])
+  const [heading, setHeading] = useState([]);
   const [items, setItems] = useState([]);
   console.log(items);
-   useEffect(() => {
+  useEffect(() => {
     if (items.length !== 0) {
-      setHeading(Object.keys(items[0]))
+      setHeading(Object.keys(items[0]));
     }
-   }, [items])
+  }, [items]);
   const readExcel = (file) => {
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -40,44 +41,36 @@ function App() {
       setItems(d);
     });
   };
+  const emailEditorRef = useRef(null);
 
+  const exportHtml = () => {
+    emailEditorRef.current.editor.exportHtml((data) => {
+      const { design, html } = data;
+      console.log("exportHtml", html);
+      console.log(design);
+    });
+  };
+
+  const onLoad = () => {
+    // editor instance is created
+    // you can load your template here;
+    // const templateJson = {};
+    // emailEditorRef.current.editor.loadDesign(templateJson);
+  };
+
+  const onReady = () => {
+    // editor is ready
+    console.log("onReady");
+  };
   return (
     <div>
-      <input
-        type="file"
-        onChange={(e) => {
-          const file = e.target.files[0];
-          console.log(file);
-          readExcel(file);
-        }}
-      />
-      {items.length !== 0 ? (
-        <table class="table container">
-          <thead>
-            <tr>
-              {
-                heading.map(h =>(
-                  <th scope="col">{h}</th>
-                  ))
-              }
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((d, idx) => (
-            <tr key={idx}>
-              {
-                heading.map(h =>{
-                  console.log(h)
-                  // console.log(JSON.parse(h))
-                  // console.log(d.${h})
-               return  <td>{d[h]}</td>
-                })
-              }
-            </tr>
-          ))}
-          </tbody>
-        </table>
-      ) : null}
+      <div>
+        <button onClick={exportHtml}>Export HTML</button>
+      </div>
+      <div className="parentgg">
+        {/* <div className="removgg">Developed by gg</div> */}
+        <EmailEditor style={{ height: "calc(100vh - 50px)" }} ref={emailEditorRef} onLoad={onLoad} onReady={onReady} />
+      </div>
     </div>
   );
 }

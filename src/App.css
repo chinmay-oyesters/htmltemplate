@@ -36,3 +36,39 @@
     transform: rotate(360deg);
   }
 }
+.gCuogY .blockbuilder-branding {
+  height: 50px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 50px;
+  background: rgb(238, 238, 238);
+  border-top: 1px solid rgb(214, 217, 220);
+  z-index: 100;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  text-decoration: none;
+  display: none !important;
+}
+.parentgg{
+  height: calc(100vh - 50px);
+  /* background-color: red; */
+  position: relative;
+  width: 100vw;
+}
+.removgg{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 50px;
+  background-color: pink;
+  width: 425px;
+}
