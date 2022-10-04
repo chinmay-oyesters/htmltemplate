@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import * as XLSX from "xlsx";
 
 function App() {
+  const [heading ,setHeading] =  useState([])
   const [items, setItems] = useState([]);
-
+  console.log(items);
+   useEffect(() => {
+    if (items.length !== 0) {
+      setHeading(Object.keys(items[0]))
+    }
+   }, [items])
   const readExcel = (file) => {
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -41,26 +47,37 @@ function App() {
         type="file"
         onChange={(e) => {
           const file = e.target.files[0];
+          console.log(file);
           readExcel(file);
         }}
       />
-
-      <table class="table container">
-        <thead>
-          <tr>
-            <th scope="col">Item</th>
-            <th scope="col">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((d) => (
-            <tr key={d.Item}>
-              <th>{d.Item}</th>
-              <td>{d.Description}</td>
+      {items.length !== 0 ? (
+        <table class="table container">
+          <thead>
+            <tr>
+              {
+                heading.map(h =>(
+                  <th scope="col">{h}</th>
+                  ))
+              }
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((d, idx) => (
+            <tr key={idx}>
+              {
+                heading.map(h =>{
+                  console.log(h)
+                  // console.log(JSON.parse(h))
+                  // console.log(d.${h})
+               return  <td>{d[h]}</td>
+                })
+              }
             </tr>
           ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      ) : null}
     </div>
   );
 }
